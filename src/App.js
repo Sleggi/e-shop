@@ -33,8 +33,8 @@ function App() {
   useEffect(() => {
     // после осуществления первого рендера [], отправь на сервак запрос по ссылке,
     // когда данные будут получены, вызвать диспатч получает setPizzas(объект) и диспатч передает это в redux
-    axios.get("http://localhost:3000/db.json").then(({ data }) => {
-      dispatch(setPizzas(data.pizzas))
+    axios.get("http://localhost:3004/pizzas").then(({ data }) => {
+      dispatch(setPizzas(data))
     })
   }, [])
 
