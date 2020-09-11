@@ -1,24 +1,52 @@
 import React from 'react'
 import { Categories, SortPopup, PizzaBlock } from '../components'
+import { useSelector, useDispatch } from 'react-redux'
+import { setCategory } from '../redux/actions/filters';
 
 
-function Home({ items }) {
+function Home() {
+    const categorie = ["Мясные", "Вегетарианская", "Гриль", "Острые", "Закрытые"];
+
+    const items = [
+        { name: "Популярности", type: 'popular' },
+        { name: "Цене", type: 'price' },
+        { name: "Алфавиту", type: 'alphabet' }
+    ]
+
+
+    const dispatch = useDispatch();
+
+    const onSelectCategories = index => {
+        dispatch(setCategory(index))
+    }
+
+    // вытащим из redux state фильтрацию и массив с пиццами
+    // из state мы вытаскиваем нужныем нам параметры, pizzas
+    const store = useSelector(({ pizzas }) => {
+        // возвращаем не все состояние, а только нужные нам
+        return {
+            items: pizzas.items,
+        }
+    });
+
     return (
         <div className="container">
             <div className="content__top">
-                <Categories onClickItem={(item) => console.log(item)} items={[
-                    "Мясные", "Вегетарианская", "Гриль", "Острые", "Закрытые"
-                ]} />
-                <SortPopup items={[
-                    { name: "Популярности", type: 'popular' },
-                    { name: "Цене", type: 'price' },
-                    { name: "Алфавиту", type: 'alphabet' }
-                ]} />
+                <Categories
+                    onClickItem={onSelectCategories}
+                    items={categorie}
+                />
+
+
+                <SortPopup
+                    items={items}
+
+                />
             </div>
             <h2 className="content__title">Все пиццы</h2>
             <div className="content__items">
                 {
-                    items.map((obj) => (
+                    store.items && store.items.map((obj) => (
                         <PizzaBlock key={obj.id} {...obj} />
                     ))
                 }

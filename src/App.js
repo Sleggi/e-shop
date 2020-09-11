@@ -1,14 +1,13 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import axios from 'axios'
 import { Header } from './components'
 import { Home, Cart } from './pages'
 import { Route } from 'react-router-dom';
 import { setPizzas } from './redux/actions/pizzas'
-import { connect } from 'react-redux'
+import { useDispatch } from 'react-redux'
 
 
-
-
+// ХРАНЕНИЕ СТЕЙТА В useState
 
 // function App() {
 
@@ -23,41 +22,77 @@ import { connect } from 'react-redux'
 //   return;
 // }
 
-class App extends React.Component {
 
-  componentDidMount() {
-    axios.get('http://localhost:3000/db.json').then(({ data }) => { this.props.sohranPizzas(data.pizzas) })
-  }
+// ХРАНЕНИЕ СТЕЙТА В REDUX ЧЕРЕЗ ХУКИ
 
-  render() {
-    return (
+function App() {
 
-      <div className="App">
-        <div className="wrapper">
-          <Header />
-          <div className="content">
-            <Route path='/' render={() => <Home items={this.props.items} />} exact />
-            <Route path='/cart' component={Cart} exact />
-          </div>
+  // чтобы передавать данные в redux
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    // после осуществления первого рендера [], отправь на сервак запрос по ссылке,
+    // когда данные будут получены, вызвать диспатч получает setPizzas(объект) и диспатч передает это в redux
+    axios.get("http://localhost:3000/db.json").then(({ data }) => {
+      dispatch(setPizzas(data.pizzas))
+    })
+  }, [])
+
+  return (
+
+    <div className="App">
+      <div className="wrapper">
+        <Header />
+        <div className="content">
+          <Route path='/' component={Home} exact />
+          <Route path='/cart' component={Cart} exact />
         </div>
       </div>
+    </div>
 
-    )
-  }
-
+  )
 }
 
-const mapStateToProps = state => {
-  return {
-    items: state.pizzas.items,
-    filters: state.filters,
-  }
-}
+export default App
 
-const mapDispatchToProps = dispatch => {
-  return {
-    sohranPizzas: (items) => dispatch(setPizzas(items))
-  }
-}
 
-export default connect(mapStateToProps, mapDispatchToProps)(App);
+// ХРАНЕНИЕ СТЕЙТА В КЛАССОВОМ КОМПОНЕНТЕ REDUX
+
+// class App extends React.Component {
+
+//   componentDidMount() {
+//     axios.get('http://localhost:3000/db.json').then(({ data }) => { this.props.sohranPizzas(data.pizzas) })
+//   }
+
+//   render() {
+//     return (
+
+//       <div className="App">
+//         <div className="wrapper">
+//           <Header />
+//           <div className="content">
+//             <Route path='/' render={() => <Home items={this.props.items} />} exact />
+//             <Route path='/cart' component={Cart} exact />
+//           </div>
+//         </div>
+//       </div>
+
+//     )
+//   }
+
+// }
+
+// const mapStateToProps = state => {
+//   return {
+//     items: state.pizzas.items,
+//     filters: state.filters,
+//   }
+// }
+
+// const mapDispatchToProps = dispatch => {
+//   return {
+//     sohranPizzas: (items) => dispatch(setPizzas(items))
+//   }
+// }
+
+// export default connect(mapStateToProps, mapDispatchToProps)(App);
