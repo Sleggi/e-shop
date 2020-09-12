@@ -3,7 +3,7 @@ import { Categories, SortPopup, PizzaBlock, LoadingBlock } from '../components'
 import { useSelector, useDispatch } from 'react-redux'
 import { setCategory } from '../redux/actions/filters';
 import { fetchPizzas } from '../redux/actions/pizzas';
-import { filters } from '../redux/actions/filters'
+
 
 
 function Home() {
@@ -52,6 +52,7 @@ function Home() {
         <div className="container">
             <div className="content__top">
                 <Categories
+                    activeCategory={store.categorie}
                     onClickItem={onSelectCategories}
                     items={categorie}
                 />
