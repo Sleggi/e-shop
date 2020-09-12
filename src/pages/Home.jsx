@@ -1,8 +1,9 @@
 import React, { useEffect } from 'react'
-import { Categories, SortPopup, PizzaBlock } from '../components'
+import { Categories, SortPopup, PizzaBlock, LoadingBlock } from '../components'
 import { useSelector, useDispatch } from 'react-redux'
 import { setCategory } from '../redux/actions/filters';
-import { fetchPizzas } from '../redux/actions/pizzas'
+import { fetchPizzas } from '../redux/actions/pizzas';
+import { filters } from '../redux/actions/filters'
 
 
 function Home() {
@@ -31,14 +32,21 @@ function Home() {
         dispatch(setCategory(index))
     }
 
-    // вытащим из redux state фильтрацию и массив с пиццами
+    // вытащим из redux state массив с пиццами
     // из state мы вытаскиваем нужныем нам параметры, pizzas
-    const store = useSelector(({ pizzas }) => {
-        // возвращаем не все состояние, а только нужные нам
+    const store = useSelector(({ pizzas, filters }) => {
+        // возвращаем состояния
         return {
             items: pizzas.items,
+            isLoaded: pizzas.isLoaded,
+            categorie: filters.categorie,
+            sortBy: filters.sortBy
         }
     });
+
+
+
+
 
     return (
         <div className="container">
@@ -57,10 +65,11 @@ function Home() {
             <h2 className="content__title">Все пиццы</h2>
             <div className="content__items">
                 {
-                    store.items && store.items.map((obj) => (
+                    store.isLoaded ? store.items.map((obj) =>
                         <PizzaBlock key={obj.id} {...obj} />
-                    ))
+                    ) : Array(12).fill(<LoadingBlock />) // добавляем 12 loading блоков при рендере компонента)
                 }
+
 
             </div>
         </div>
