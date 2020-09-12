@@ -1,10 +1,8 @@
-import React, { useEffect } from 'react';
-import axios from 'axios'
+import React from 'react';
 import { Header } from './components'
 import { Home, Cart } from './pages'
 import { Route } from 'react-router-dom';
-import { setPizzas } from './redux/actions/pizzas'
-import { useDispatch } from 'react-redux'
+
 
 
 // ХРАНЕНИЕ СТЕЙТА В useState
@@ -27,16 +25,6 @@ import { useDispatch } from 'react-redux'
 
 function App() {
 
-  // чтобы передавать данные в redux
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    // после осуществления первого рендера [], отправь на сервак запрос по ссылке,
-    // когда данные будут получены, вызвать диспатч получает setPizzas(объект) и диспатч передает это в redux
-    axios.get("http://localhost:3004/pizzas").then(({ data }) => {
-      dispatch(setPizzas(data))
-    })
-  }, [])
 
   return (
 
