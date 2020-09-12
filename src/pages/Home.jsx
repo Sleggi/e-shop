@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import { Categories, SortPopup, PizzaBlock, LoadingBlock } from '../components'
 import { useSelector, useDispatch } from 'react-redux'
-import { setCategory } from '../redux/actions/filters';
+import { setCategory, setSortBy } from '../redux/actions/filters';
 import { fetchPizzas } from '../redux/actions/pizzas';
 
 
@@ -32,6 +32,10 @@ function Home() {
         dispatch(setCategory(index))
     }
 
+    const onSelectType = type => {
+        dispatch(setSortBy(type))
+    }
+
     // вытащим из redux state массив с пиццами
     // из state мы вытаскиваем нужныем нам параметры, pizzas
     const store = useSelector(({ pizzas, filters }) => {
@@ -60,7 +64,8 @@ function Home() {
 
                 <SortPopup
                     items={items}
-
+                    activeSortType={store.sortBy}
+                    onClickSortType={onSelectType}
                 />
             </div>
             <h2 className="content__title">Все пиццы</h2>

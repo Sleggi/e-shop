@@ -1,23 +1,25 @@
 import React, { useState, useEffect, useRef } from 'react'
+import PropTypes from 'prop-types'
 
-const SortPopup = React.memo(function ({ items }) {
+const SortPopup = React.memo(function ({ items, activeSortType, onClickSortType }) {
 
     const [visiblePopup, setVisiblePopup] = useState(false)
-    const [active, setActive] = useState(0)
-    const activeLabel = items[active].name;
+    //Таким способом activeLabel выдает ошибку, потому что activeSortType это уже значение
+    // строка "popular", поэтому мы делаем метод find
+    // const activeLabel = items[activeSortType].name;
+    const activeLabel = items.find(obj => obj.type === activeSortType).name;
 
     const sortRef = useRef()
 
-    const toggleActive = (index) => {
-        setActive(index)
-        setVisiblePopup(false)
-    }
 
     const toggleVisiblePopup = () => {
         setVisiblePopup(!visiblePopup)
     };
 
-
+    const onSelectItem = (type) => {
+        onClickSortType(type)
+        setVisiblePopup(false)
+    }
 
     const handleOutsideClick = (e) => {
         if (!e.path.includes(sortRef.current)) { setVisiblePopup(false) }
@@ -51,8 +53,8 @@ const SortPopup = React.memo(function ({ items }) {
                         items.map((item, index) => (
                             <li
                                 key={`${item.type}_${index}`}
-                                className={active === index ? 'active' : ''}
-                                onClick={() => toggleActive(index)}>{item.name}</li>
+                                className={activeSortType === item.type ? 'active' : ''}
+                                onClick={() => onSelectItem(item.type)}>{item.name}</li>
                         ))
                     }
                 </ul>
@@ -60,5 +62,16 @@ const SortPopup = React.memo(function ({ items }) {
         </div>
     )
 })
+
+
+SortPopup.propTypes = {
+    activeSortType: PropTypes.string.isRequired,
+    items: PropTypes.arrayOf(PropTypes.object).isRequired, // является массивом объектов
+    onClickSortType: PropTypes.func.isRequired
+}
+
+SortPopup.defaultProps = {
+    items: []
+};
 
 export default SortPopup
