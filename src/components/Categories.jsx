@@ -24,8 +24,8 @@ const Categories = React.memo(function ({ activeCategory, items, onClickItem }) 
 
 
 Categories.propTypes = {
-    activeCategory: PropTypes.number.isRequired,
-    items: PropTypes.arrayOf(PropTypes.object).isRequired, // является массивом объектов
+    activeCategory: PropTypes.oneOf([PropTypes.number, null]),
+    items: PropTypes.arrayOf(PropTypes.string).isRequired, // является массивом строк
     onClickItem: PropTypes.func
 }
 

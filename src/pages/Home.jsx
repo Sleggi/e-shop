@@ -12,29 +12,11 @@ function Home() {
     const categorie = ["Мясные", "Вегетарианская", "Гриль", "Острые", "Закрытые"];
 
     const items = [
-        { name: "Популярности", type: 'popular' },
-        { name: "Цене", type: 'price' },
-        { name: "Алфавиту", type: 'alphabet' }
+        { name: "Популярности", type: 'popular', order: 'desc' },
+        { name: "Цене", type: 'price', order: 'desc' },
+        { name: "Алфавиту", type: 'name', order: 'asc' }
     ]
 
-
-    // чтобы передавать данные в redux
-    const dispatch = useDispatch();
-
-    useEffect(() => {
-        // после осуществления первого рендера [], отправь на сервак запрос по ссылке,
-        // когда данные будут получены, вызвать диспатч получает setPizzas(объект) и диспатч передает это в redux
-        dispatch(fetchPizzas())
-    }, [])
-
-
-    const onSelectCategories = index => {
-        dispatch(setCategory(index))
-    }
-
-    const onSelectType = type => {
-        dispatch(setSortBy(type))
-    }
 
     // вытащим из redux state массив с пиццами
     // из state мы вытаскиваем нужныем нам параметры, pizzas
@@ -47,6 +29,25 @@ function Home() {
             sortBy: filters.sortBy
         }
     });
+
+    // чтобы передавать данные в redux
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        // после осуществления первого рендера [], отправь на сервак запрос по ссылке,
+        // когда данные будут получены, вызвать диспатч получает setPizzas(объект) и диспатч передает это в redux
+        dispatch(fetchPizzas(store.sortBy, store.categorie))
+    }, [store.sortBy, store.categorie])
+
+
+    const onSelectCategories = index => {
+        dispatch(setCategory(index))
+    }
+
+    const onSelectType = type => {
+        dispatch(setSortBy(type))
+    }
+
 
 
 
@@ -64,7 +65,7 @@ function Home() {
 
                 <SortPopup
                     items={items}
-                    activeSortType={store.sortBy}
+                    activeSortType={store.sortBy.type}
                     onClickSortType={onSelectType}
                 />
             </div>

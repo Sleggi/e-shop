@@ -1,6 +1,9 @@
 const initialState = {
     categorie: null,
-    sortBy: 'popular'
+    sortBy: {
+        type: 'popular',
+        order: 'desc'
+    }
 }
 
 //на момент первого вызова filters state = initialState
