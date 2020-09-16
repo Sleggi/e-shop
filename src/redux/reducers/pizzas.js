@@ -10,17 +10,17 @@ const pizzas = (state = initialState, action) => {
             return {
                 ...state,
                 items: action.payload,
-                isLoaded: true
+                    isLoaded: true
             }
-        // если пришел action set_loaded то поменять isLoaded на то что стоит в action.payload в setLoaded action
-        case 'SET_LOADED':
-            return {
-                ...state,
-                isLoaded: action.payload,
-            }
+            // если пришел action set_loaded то поменять isLoaded на то что стоит в action.payload в setLoaded action
+            case 'SET_LOADED':
+                return {
+                    ...state,
+                    isLoaded: action.payload,
+                }
 
-        default:
-            return state;
+                default:
+                    return state;
     }
 }
 

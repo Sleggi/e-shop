@@ -3,6 +3,7 @@ import { Categories, SortPopup, PizzaBlock, LoadingBlock } from '../components'
 import { useSelector, useDispatch } from 'react-redux'
 import { setCategory, setSortBy } from '../redux/actions/filters';
 import { fetchPizzas } from '../redux/actions/pizzas';
+import { addPizzaToCart } from '../redux/actions/cart';
 
 
 
@@ -20,15 +21,18 @@ function Home() {
 
     // вытащим из redux state массив с пиццами
     // из state мы вытаскиваем нужныем нам параметры, pizzas
-    const store = useSelector(({ pizzas, filters }) => {
+    const store = useSelector(({ pizzas, filters, cart }) => {
         // возвращаем состояния
         return {
             items: pizzas.items,
             isLoaded: pizzas.isLoaded,
             categorie: filters.categorie,
-            sortBy: filters.sortBy
+            sortBy: filters.sortBy,
+            cartItems: cart.items
         }
     });
+
+    console.log(store.cartItems)
 
     // чтобы передавать данные в redux
     const dispatch = useDispatch();
@@ -49,7 +53,12 @@ function Home() {
     }
 
 
-
+    const handleaddPizzaToCart = obj => {
+        dispatch({
+            type: 'ADD_PIZZA_CART',
+            payload: obj,
+        })
+    }
 
 
 
@@ -73,7 +82,7 @@ function Home() {
             <div className="content__items">
                 {
                     store.isLoaded ? store.items.map((obj) =>
-                        <PizzaBlock key={obj.id} {...obj} />
+                        <PizzaBlock onAddPizza={handleaddPizzaToCart} addedCount={store.cartItems[obj.id] && store.cartItems[obj.id].length} key={obj.id} {...obj} />
                     ) : Array(12).fill(<LoadingBlock />) // добавляем 12 loading блоков при рендере компонента)
                 }
 
