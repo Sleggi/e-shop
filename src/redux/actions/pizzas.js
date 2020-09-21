@@ -11,7 +11,7 @@ export const setLoaded = (payload) => ({
 export const fetchPizzas = (sortBy, category) => (dispatch) => {
     // до того как выполнится axios запрос сразу ставить setLoaded false 
     dispatch(setLoaded(false))
-    axios.get(`http://localhost:3004/pizzas?${category !== null ? `category=${category}` : ''
+    axios.get(`/pizzas?${category !== null ? `category=${category}` : ''
         }&_sort=${sortBy.type}&_order=${sortBy.order}`).then(({ data }) => {
             // после того как запрос выполнился выполняется второй action setPizzas он сохраняет пиццы и ставит флаг, что все загруженно
             dispatch(setPizzas(data))

@@ -82,7 +82,7 @@ function Home() {
             <div className="content__items">
                 {
                     store.isLoaded ? store.items.map((obj) =>
-                        <PizzaBlock onAddPizza={handleaddPizzaToCart} addedCount={store.cartItems[obj.id] && store.cartItems[obj.id].length} key={obj.id} {...obj} />
+                        <PizzaBlock onAddPizza={handleaddPizzaToCart} addedCount={store.cartItems[obj.id] && store.cartItems[obj.id].items.length} key={obj.id} {...obj} />
                     ) : Array(12).fill(<LoadingBlock />) // добавляем 12 loading блоков при рендере компонента)
                 }
 
