@@ -45,6 +45,30 @@ const cart = (state = initialState, action) => {
             }
         }
 
+
+
+        case 'REMOVE_CART_ITEM': {
+            //Клонируем айтемс в newItems 
+            const newItems = {
+                ...state.items
+            }
+            // вытаскиваем totalPrice по id 
+            const currentTotalPrice = newItems[action.payload].totalPrice
+            // из объекта вытаскиваем массив items и из него получаем длину
+            const currentTotalCount = newItems[action.payload].items.length
+            // из action.payload вытаскиваем id 
+            // id удаляется только из клонируемого объекта newItems. в старом items он остается, не мутируется 
+            delete newItems[action.payload];
+            return {
+                ...state,
+                items: newItems,
+                // вычитаем из общего state.totalPrice цену текущего по id
+                totalPrice: state.totalPrice - currentTotalPrice,
+                totalCount: state.totalCount - currentTotalCount,
+            };
+        }
+
+
         case 'CLEAR_CART': {
             return {
                 ...state,
@@ -53,6 +77,8 @@ const cart = (state = initialState, action) => {
                 items: {},
             }
         }
+
+
 
 
         default:

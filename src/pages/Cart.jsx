@@ -1,7 +1,7 @@
 import React from 'react'
 import { CartItem } from '../components'
 import { useDispatch, useSelector } from 'react-redux'
-import { clearCart } from '../redux/actions/cart'
+import { clearCart, removeCartItem } from '../redux/actions/cart'
 import CartEmpty from '../assets/img/empty-cart.png'
 import { Link } from 'react-router-dom'
 
@@ -24,7 +24,10 @@ function Cart() {
     const onClearCart = () => {
         if (window.confirm("Вы действительно хотите удалить все товары ?")) return dispatch(clearCart())
         else return ''
+    }
 
+    const onDeleteItems = (id) => {
+        dispatch(removeCartItem(id))
     }
 
     return (
@@ -53,7 +56,7 @@ function Cart() {
                         <div className="content__items">
                             {
                                 pizzas.map(obj => (
-                                    <CartItem name={obj.name} type={obj.type} size={obj.size} totalPrice={state.items[obj.id].totalPrice} totalCount={state.items[obj.id].items.length} />
+                                    <CartItem id={obj.id} name={obj.name} type={obj.type} size={obj.size} totalPrice={state.items[obj.id].totalPrice} totalCount={state.items[obj.id].items.length} onDeleteItems={onDeleteItems} />
                                 ))
                             }
 
