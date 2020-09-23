@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { clearCart, removeCartItem } from '../redux/actions/cart'
 import CartEmpty from '../assets/img/empty-cart.png'
 import { Link } from 'react-router-dom'
+import { Button } from '../components'
 
 function Cart() {
 
@@ -25,9 +26,18 @@ function Cart() {
         if (window.confirm("Вы действительно хотите удалить все товары ?")) return dispatch(clearCart())
         else return ''
     }
-
+    //Метод удаления пицц
     const onDeleteItems = (id) => {
         dispatch(removeCartItem(id))
+    }
+    // Возвращаем заказ
+    const onBuyClicked = () => {
+        const order = {
+            items: state.items,
+            totalPrice: state.totalPrice,
+            totalCount: state.totalCount
+        }
+        return console.log("ВАШ ЗАКАЗ", order)
     }
 
     return (
@@ -56,7 +66,8 @@ function Cart() {
                         <div className="content__items">
                             {
                                 pizzas.map(obj => (
-                                    <CartItem id={obj.id} name={obj.name} type={obj.type} size={obj.size} totalPrice={state.items[obj.id].totalPrice} totalCount={state.items[obj.id].items.length} onDeleteItems={onDeleteItems} />
+                                    <CartItem id={obj.id} name={obj.name} type={obj.type} size={obj.size} totalPrice={state.items[obj.id].totalPrice} totalCount={state.items[obj.id].items.length}
+                                        onDeleteItems={onDeleteItems} />
                                 ))
                             }
 
@@ -65,7 +76,7 @@ function Cart() {
                         <div className="cart__bottom">
                             <div className="cart__bottom-details">
                                 <span> Всего пицц: <b>{state.totalCount}</b> </span>
-                                <span> Сумма заказа: <b>{state.totalPrice}</b> </span>
+                                <span> Сумма заказа: <b>{state.totalPrice} P</b> </span>
                             </div>
                             <div className="cart__bottom-buttons">
                                 <a href="/" className="button button--outline button--add go-back-btn">
@@ -75,9 +86,9 @@ function Cart() {
 
                                     <span>Вернуться назад</span>
                                 </a>
-                                <div className="button pay-btn">
+                                <Button onClick={onBuyClicked} className="button pay-btn">
                                     <span>Оплатить сейчас</span>
-                                </div>
+                                </Button>
                             </div>
                         </div>
                     </div>
