@@ -1,6 +1,6 @@
 ### E-shop 
 Created it to learn more about React, Redux.
-#### technologies used in this project - html, css, react, react router, Redux, axios
+#### technologies used in this project - html, css, react, react router, Redux, axios, prop-types library, json server library
 ##### functionality: 
 1. Interaction with the API
 2. add and remove products
